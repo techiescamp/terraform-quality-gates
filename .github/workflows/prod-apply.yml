@@ -1,0 +1,22 @@
+name: Production Apply
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  TF_MODULE: modules/vpc-ec2
+  TF_VERSION: 1.9.0
+
+jobs:
+  apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - run: terraform -chdir=${{ env.TF_MODULE }} init -backend=false
+      - run: echo "Terraform apply would run here"
