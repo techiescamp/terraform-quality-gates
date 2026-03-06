@@ -2,10 +2,10 @@ terraform {
   required_version = ">= 1.5.0"
 
   backend "s3" {
-    bucket         = "techies-terraform"
-    key            = "prod/vpc-ec2/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
+    bucket  = "techies-terraform"
+    key     = "prod/vpc-ec2/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
   }
 }
 
