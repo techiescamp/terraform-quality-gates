@@ -37,3 +37,26 @@ terraform.rc
 # Ignore specific MacOS/Windows files
 .DS_Store
 Thumbs.db
+
+# Go workspace and build files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+go.work
+go.work.sum
+
+# IDEs
+.idea/
+.vscode/
+
+# Terratest
+tests/go.sum
+tests/go.mod
+
+go.mod
+go.sum

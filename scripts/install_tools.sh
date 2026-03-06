@@ -48,6 +48,19 @@ echo "Installing TFSec..."
 sudo wget -qO /usr/local/bin/tfsec https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64
 sudo chmod +x /usr/local/bin/tfsec
 
+# 6. Install AWS CLI v2
+echo "Installing AWS CLI..."
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip -o awscliv2.zip
+sudo ./aws/install --update
+rm awscliv2.zip
+rm -rf aws
+
+# 7. Install OPA
+echo "Installing OPA..."
+curl -L -o /usr/local/bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
+sudo chmod +x /usr/local/bin/opa
+
 echo ""
 echo "========================================="
 echo "Installation Complete!"
@@ -60,4 +73,8 @@ echo "---"
 /home/ubuntu/.local/bin/checkov --version
 echo "---"
 tfsec --version
+echo "---"
+aws --version
+echo "---"
+opa version
 echo "========================================="
