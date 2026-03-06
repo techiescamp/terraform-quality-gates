@@ -6,7 +6,6 @@ terraform {
     key            = "prod/vpc-ec2/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
-    dynamodb_table = "tf-lock-table"
   }
 }
 
