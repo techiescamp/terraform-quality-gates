@@ -101,10 +101,54 @@ resource "aws_flow_log" "main" {
   iam_role_arn         = aws_iam_role.vpc_flow_log_role.arn
 }
 
+data "aws_caller_identity" "current" {}
+
+resource "aws_kms_key" "vpc_flow_log_key" {
+  description             = "KMS key for VPC flow logs"
+  enable_key_rotation     = true
+  deletion_window_in_days = 7
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Id      = "kms-for-flow-logs"
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow CloudWatch Logs to use the key"
+        Effect = "Allow"
+        Principal = {
+          Service = "logs.${var.aws_region}.amazonaws.com"
+        }
+        Action = [
+          "kms:Encrypt*",
+          "kms:Decrypt*",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:Describe*"
+        ]
+        Resource = "*"
+        Condition = {
+          ArnEquals = {
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/vpc/${var.environment}-flow-log"
+          }
+        }
+      }
+    ]
+  })
+}
+
 resource "aws_cloudwatch_log_group" "vpc_flow_log" {
   name              = "/aws/vpc/${var.environment}-flow-log"
-  retention_in_days = 7
-  # CKV_AWS_158 Ensure that CloudWatch Log Group is encrypted by KMS (skipped for simplicity, but in prod add kms_key_id)
+  retention_in_days = 365                              # CKV_AWS_338
+  kms_key_id        = aws_kms_key.vpc_flow_log_key.arn # CKV_AWS_158
 }
 
 resource "aws_iam_role" "vpc_flow_log_role" {
@@ -139,8 +183,11 @@ resource "aws_iam_role_policy" "vpc_flow_log_policy" {
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams"
         ]
-        Effect   = "Allow"
-        Resource = "*"
+        Effect = "Allow"
+        Resource = [
+          aws_cloudwatch_log_group.vpc_flow_log.arn,
+          "${aws_cloudwatch_log_group.vpc_flow_log.arn}:*"
+        ]
       }
     ]
   })
