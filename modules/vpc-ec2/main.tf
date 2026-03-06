@@ -88,9 +88,9 @@ resource "aws_instance" "web" {
   }
 }
 
-resource "aws_s3_bucket" "bad_example" {
-  bucket = "my-test-bucket-open"
-}
+# resource "aws_s3_bucket" "bad_example" {
+#   bucket = "my-test-bucket-open"
+# }
 
 # CKV2_AWS_11: Ensure VPC flow logging is enabled in all VPCs
 resource "aws_flow_log" "main" {
