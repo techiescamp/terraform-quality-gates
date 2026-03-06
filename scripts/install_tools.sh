@@ -61,6 +61,10 @@ echo "Installing OPA..."
 curl -L -o /usr/local/bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
 sudo chmod +x /usr/local/bin/opa
 
+# 8. Install Infracost
+echo "Installing Infracost..."
+curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
+
 echo ""
 echo "========================================="
 echo "Installation Complete!"
@@ -77,4 +81,6 @@ echo "---"
 aws --version
 echo "---"
 opa version
+echo "---"
+infracost --version
 echo "========================================="

@@ -43,6 +43,15 @@ resource "aws_security_group" "web" {
     description = "HTTPS from internet"
   }
 
+# Add temporarily inside aws_security_group.web ingress block
+  # ingress {
+  #   from_port   = 22
+  #   to_port     = 22
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  #   description = "SSH - intentional violation test"
+  # }
+
   # Checkov CKV_AWS_382: Ensure no security groups allow egress from 0.0.0.0:0 to port -1
   # Removing the overly permissive egress rule. Add specific egress rules as needed for your application.
   # egress {
