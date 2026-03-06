@@ -43,7 +43,7 @@ resource "aws_security_group" "web" {
     description = "HTTPS from internet"
   }
 
-# Add temporarily inside aws_security_group.web ingress block
+  # Add temporarily inside aws_security_group.web ingress block
   # ingress {
   #   from_port   = 22
   #   to_port     = 22
