@@ -80,3 +80,7 @@ resource "aws_instance" "web" {
     Environment = var.environment
   }
 }
+
+resource "aws_s3_bucket" "bad_example" {
+  bucket = "my-test-bucket-open"
+}

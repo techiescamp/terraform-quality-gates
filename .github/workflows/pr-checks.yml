@@ -1,0 +1,66 @@
+name: PR Quality Gates
+
+on:
+  pull_request:
+    branches: [main]
+
+env:
+  TF_MODULE: modules/vpc-ec2
+  TF_VERSION: 1.9.0
+
+jobs:
+  format-check:
+    name: Terraform Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - run: terraform fmt -check -recursive
+
+  validate:
+    name: Terraform Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - run: terraform -chdir=${{ env.TF_MODULE }} init -backend=false
+      - run: terraform -chdir=${{ env.TF_MODULE }} validate
+
+  tflint:
+    name: tflint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+      - run: tflint --init
+      - run: tflint --chdir=${{ env.TF_MODULE }} --format compact
+
+  security-scan:
+    name: Checkov Security Scan (HARD GATE)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: ${{ env.TF_MODULE }}
+          framework: terraform
+          soft_fail: false        # HIGH findings BLOCK the merge
+          output_format: github_failed_only
+
+  terraform-docs:
+    name: terraform-docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: terraform-docs/gh-actions@v1
+        with:
+          working-dir: ${{ env.TF_MODULE }}
+          output-file: README.md
+          output-method: inject
+          git-push: true
