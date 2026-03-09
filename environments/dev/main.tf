@@ -3,7 +3,7 @@ terraform {
 
   backend "s3" {
     bucket  = "techies-terraform"
-    key     = "prod/vpc-ec2/terraform.tfstate"
+    key     = "dev/vpc-ec2/terraform.tfstate"
     region  = "us-east-1"
     encrypt = true
   }
@@ -11,13 +11,13 @@ terraform {
 
 module "vpc" {
   source      = "../../modules/vpc"
-  environment = "prod"
+  environment = "dev"
   aws_region  = "us-east-1"
 }
 
 module "ec2" {
   source        = "../../modules/ec2"
-  environment   = "prod"
+  environment   = "dev"
   aws_region    = "us-east-1"
   vpc_id        = module.vpc.vpc_id
   subnet_id     = module.vpc.subnet_id
