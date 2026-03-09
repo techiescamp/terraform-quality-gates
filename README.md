@@ -1,1 +1,2 @@
 # terraform-quality-gates
+terraform
