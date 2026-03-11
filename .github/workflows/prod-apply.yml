@@ -17,7 +17,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - run: terraform -chdir=environments/prod init
-      - run: terraform -chdir=environments/prod plan -out=tfplan
+      - run: terraform -chdir=environments/prod plan -var-file="../../vars/prod/prod.tfvars" -out=tfplan
       - uses: actions/upload-artifact@v4
         with:
           name: tfplan

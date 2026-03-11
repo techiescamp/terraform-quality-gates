@@ -11,12 +11,8 @@ func TestVpcEc2Module(t *testing.T) {
   t.Parallel()
 
   terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-    TerraformDir: "../modules/vpc-ec2",
-    Vars: map[string]interface{}{
-      "environment":   "terratest",
-      "instance_type": "t2.micro",
-      "aws_region":    "us-east-1",
-    },
+    TerraformDir: "../environments/dev",
+    VarFiles:     []string{"../../vars/dev/dev.tfvars"},
   })
 
   // CRITICAL: defer destroy runs even if assertions fail — no orphaned resources
