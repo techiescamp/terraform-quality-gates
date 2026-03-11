@@ -21,11 +21,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - run: terragrunt run-all init --terragrunt-working-dir environments/prod
-      - run: terragrunt run-all plan -out=tfplan --terragrunt-working-dir environments/prod
-      - uses: actions/upload-artifact@v4
-        with:
-          name: tfplan
-          path: environments/prod/**/tfplan
+      - run: terragrunt run-all plan --terragrunt-working-dir environments/prod
 
   apply:
     name: Terragrunt Apply (Production Gate)
@@ -44,9 +40,5 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - uses: actions/download-artifact@v4
-        with:
-          name: tfplan
-          path: environments/prod
       - run: terragrunt run-all init --terragrunt-working-dir environments/prod
       - run: terragrunt run-all apply --terragrunt-working-dir environments/prod --terragrunt-non-interactive
