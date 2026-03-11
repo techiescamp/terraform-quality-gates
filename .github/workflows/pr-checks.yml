@@ -16,9 +16,10 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-      - uses: gruntwork-io/terragrunt-action@v2
-        with:
-          terragrunt_version: "0.55.0"
+      - name: Install Terragrunt
+        run: |
+          sudo wget -qO /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.55.0/terragrunt_linux_amd64
+          sudo chmod +x /usr/local/bin/terragrunt
       - run: terragrunt hclfmt -check
 
   validate:
@@ -32,9 +33,10 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-      - uses: gruntwork-io/terragrunt-action@v2
-        with:
-          terragrunt_version: "0.55.0"
+      - name: Install Terragrunt
+        run: |
+          sudo wget -qO /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.55.0/terragrunt_linux_amd64
+          sudo chmod +x /usr/local/bin/terragrunt
       - run: terragrunt init -backend=false --terragrunt-working-dir ${{ matrix.dir }}
       - run: terragrunt validate --terragrunt-working-dir ${{ matrix.dir }}
 
