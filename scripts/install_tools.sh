@@ -65,6 +65,11 @@ sudo chmod +x /usr/local/bin/opa
 echo "Installing Infracost..."
 curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 
+# 9. Install Terragrunt
+echo "Installing Terragrunt..."
+sudo wget -qO /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.55.0/terragrunt_linux_amd64
+sudo chmod +x /usr/local/bin/terragrunt
+
 echo ""
 echo "========================================="
 echo "Installation Complete!"
@@ -83,4 +88,6 @@ echo "---"
 opa version
 echo "---"
 infracost --version
+echo "---"
+terragrunt --version
 echo "========================================="
