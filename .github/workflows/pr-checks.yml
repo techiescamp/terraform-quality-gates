@@ -37,6 +37,11 @@ jobs:
         run: |
           sudo wget -qO /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.55.0/terragrunt_linux_amd64
           sudo chmod +x /usr/local/bin/terragrunt
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
       - run: terragrunt init -backend=false --terragrunt-working-dir ${{ matrix.dir }}
       - run: terragrunt validate --terragrunt-working-dir ${{ matrix.dir }}
 
