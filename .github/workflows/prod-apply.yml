@@ -20,8 +20,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - run: terragrunt run-all init --terragrunt-working-dir environments/prod
-      - run: terragrunt run-all plan --terragrunt-working-dir environments/prod
+      - run: terragrunt run-all init --terragrunt-working-dir environments/prod --terragrunt-non-interactive
+      - run: terragrunt run-all plan --terragrunt-working-dir environments/prod --terragrunt-non-interactive
 
   apply:
     name: Terragrunt Apply (Production Gate)
@@ -40,5 +40,5 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - run: terragrunt run-all init --terragrunt-working-dir environments/prod
+      - run: terragrunt run-all init --terragrunt-working-dir environments/prod --terragrunt-non-interactive
       - run: terragrunt run-all apply --terragrunt-working-dir environments/prod --terragrunt-non-interactive
