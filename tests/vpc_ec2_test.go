@@ -11,8 +11,8 @@ func TestVpcEc2Module(t *testing.T) {
   t.Parallel()
 
   terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-    TerraformDir: "../environments/dev",
-    VarFiles:     []string{"../../vars/dev/dev.tfvars"},
+    TerraformDir:    "../environments/dev/ec2",
+    TerraformBinary: "terragrunt",
   })
 
   // CRITICAL: defer destroy runs even if assertions fail — no orphaned resources

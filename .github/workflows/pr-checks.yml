@@ -16,28 +16,31 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-      - run: terraform fmt -check -recursive
+      - run: terragrunt hclfmt -check
 
   validate:
     name: Terraform Validate
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dir: [modules/vpc, modules/ec2, environments/dev, environments/staging, environments/prod]
+        dir: [environments/dev/vpc, environments/dev/ec2, environments/staging/vpc, environments/staging/ec2, environments/prod/vpc, environments/prod/ec2]
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-      - run: terraform -chdir=${{ matrix.dir }} init -backend=false
-      - run: terraform -chdir=${{ matrix.dir }} validate
+      - uses: gruntwork-io/terragrunt-action@v2
+        with:
+          terragrunt_version: "0.55.0"
+      - run: terragrunt init -backend=false --terragrunt-working-dir ${{ matrix.dir }}
+      - run: terragrunt validate --terragrunt-working-dir ${{ matrix.dir }}
 
   tflint:
     name: tflint
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dir: [modules/vpc, modules/ec2, environments/dev, environments/staging, environments/prod]
+        dir: [environments/dev/vpc, environments/dev/ec2, environments/staging/vpc, environments/staging/ec2, environments/prod/vpc, environments/prod/ec2]
     steps:
       - uses: actions/checkout@v4
       - uses: terraform-linters/setup-tflint@v4
