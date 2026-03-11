@@ -3,6 +3,7 @@ name: Deployment Pipeline
 on:
   push:
     branches:
+      - develop
       - main
       - production
 
@@ -19,7 +20,9 @@ jobs:
           sudo chmod +x /usr/local/bin/terragrunt
       - name: Set Environment Directory
         run: |
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/develop" ]; then
+            echo "ENV_DIR=environments/dev" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "ENV_DIR=environments/staging" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" = "refs/heads/production" ]; then
             echo "ENV_DIR=environments/prod" >> $GITHUB_ENV
@@ -45,7 +48,9 @@ jobs:
           sudo chmod +x /usr/local/bin/terragrunt
       - name: Set Environment Directory
         run: |
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/develop" ]; then
+            echo "ENV_DIR=environments/dev" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "ENV_DIR=environments/staging" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" = "refs/heads/production" ]; then
             echo "ENV_DIR=environments/prod" >> $GITHUB_ENV
