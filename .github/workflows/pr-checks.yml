@@ -2,7 +2,10 @@ name: PR Quality Gates
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - develop
+      - main
+      - production
 
 env:
   TF_VERSION: 1.9.0
