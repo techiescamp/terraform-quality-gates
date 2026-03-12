@@ -29,7 +29,8 @@ jobs:
       - run: terragrunt run-all apply --terragrunt-working-dir environments/dev --terragrunt-non-interactive
       - name: Smoke Test (EC2 Health Check)
         run: |
-          INSTANCE_ID=$(terragrunt output -no-color -json -working-dir environments/dev/ec2 | jq -r '.instance_id.value')
+          cd environments/dev/ec2
+          INSTANCE_ID=$(terragrunt output -no-color -json | jq -r '.instance_id.value')
           echo "Checking health of instance: $INSTANCE_ID"
           aws ec2 wait instance-status-ok --instance-ids $INSTANCE_ID
 
@@ -55,7 +56,8 @@ jobs:
       - run: terragrunt run-all apply --terragrunt-working-dir environments/staging --terragrunt-non-interactive
       - name: Smoke Test (EC2 Health Check)
         run: |
-          INSTANCE_ID=$(terragrunt output -no-color -json -working-dir environments/staging/ec2 | jq -r '.instance_id.value')
+          cd environments/staging/ec2
+          INSTANCE_ID=$(terragrunt output -no-color -json | jq -r '.instance_id.value')
           echo "Checking health of instance: $INSTANCE_ID"
           aws ec2 wait instance-status-ok --instance-ids $INSTANCE_ID
 
@@ -80,6 +82,7 @@ jobs:
       - run: terragrunt run-all apply --terragrunt-working-dir environments/prod --terragrunt-non-interactive
       - name: Smoke Test (EC2 Health Check)
         run: |
-          INSTANCE_ID=$(terragrunt output -no-color -json -working-dir environments/prod/ec2 | jq -r '.instance_id.value')
+          cd environments/prod/ec2
+          INSTANCE_ID=$(terragrunt output -no-color -json | jq -r '.instance_id.value')
           echo "Checking health of instance: $INSTANCE_ID"
           aws ec2 wait instance-status-ok --instance-ids $INSTANCE_ID
