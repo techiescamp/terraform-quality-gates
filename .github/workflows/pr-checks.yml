@@ -9,6 +9,20 @@ env:
   TF_VERSION: 1.9.0
 
 jobs:
+  check-secrets:
+    name: Check for Secrets
+    runs-on: ubuntu-latest
+    outputs:
+      has_infracost_key: ${{ steps.check.outputs.has_infracost_key }}
+    steps:
+      - id: check
+        run: |
+          if [ -n "${{ secrets.INFRACOST_API_KEY }}" ]; then
+            echo "has_infracost_key=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_infracost_key=false" >> $GITHUB_OUTPUT
+          fi
+
   format-check:
     name: Terragrunt Format Check
     runs-on: ubuntu-latest
@@ -114,7 +128,8 @@ jobs:
 
   infracost:
     name: Infracost (Cost Estimation)
-    if: ${{ secrets.INFRACOST_API_KEY != '' }}
+    needs: [check-secrets]
+    if: needs.check-secrets.outputs.has_infracost_key == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
