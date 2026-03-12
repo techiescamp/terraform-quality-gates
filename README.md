@@ -1,4 +1,5 @@
 # terraform-quality-gates
-terraform# test
+terraform
+# test
 
 ## Trunk-Based GitOps Model Adopted
