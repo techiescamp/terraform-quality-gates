@@ -109,7 +109,7 @@ jobs:
       - name: Run Terratest
         run: |
           cd tests
-          go mod download
+          go mod tidy
           go test -v -timeout 30m vpc_ec2_test.go
 
   infracost:
@@ -128,10 +128,12 @@ jobs:
         run: |
           infracost breakdown --path . --format json --out-file /tmp/infracost.json
       - name: Post Infracost Comment
-        uses: infracost/actions/comment@v3
-        with:
-          path: /tmp/infracost.json
-          behavior: update
+        run: |
+          infracost comment github --path /tmp/infracost.json \
+                                   --repo $GITHUB_REPOSITORY \
+                                   --pull-request ${{ github.event.pull_request.number }} \
+                                   --github-token ${{ github.token }} \
+                                   --behavior update
 
   terraform-docs:
     name: terraform-docs
