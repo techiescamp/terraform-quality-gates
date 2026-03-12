@@ -5,9 +5,9 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    bucket         = "techies-terraform"
-    key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
+    bucket  = "techies-terraform"
+    key     = "${path_relative_to_include()}/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
   }
 }

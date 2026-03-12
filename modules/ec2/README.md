@@ -46,4 +46,6 @@ No modules.
 |------|-------------|
 | <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | EC2 instance ID |
 | <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | Public IP of the EC2 instance |
+| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | The Subnet ID |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC ID |
 <!-- END_TF_DOCS -->
