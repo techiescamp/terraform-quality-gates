@@ -114,6 +114,7 @@ jobs:
 
   infracost:
     name: Infracost (Cost Estimation)
+    if: ${{ secrets.INFRACOST_API_KEY != '' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

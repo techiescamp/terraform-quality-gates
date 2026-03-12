@@ -74,8 +74,3 @@ go.work.sum
 .vscode/
 
 # Terratest
-tests/go.sum
-tests/go.mod
-
-go.mod
-go.sum
