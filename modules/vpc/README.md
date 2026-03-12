@@ -1,8 +1,3 @@
-# VPC Module
-
-This module provisions networking resources like VPC, Subnets, and IGW.
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -49,4 +44,3 @@ No modules.
 |------|-------------|
 | <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | The ID of the public subnet |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC ID |
-<!-- END_TF_DOCS -->
